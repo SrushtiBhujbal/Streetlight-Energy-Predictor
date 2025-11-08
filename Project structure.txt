@@ -1,0 +1,27 @@
+streetlight-energy-ai/
+├── 📊 DATA FLOW
+│   └── data/
+│       └── final_processeddataset_streetlight_energy_data.csv
+│           ↓
+├── 🤖 MODEL TRAINING
+│   ├── comprehensive_training.py
+│   └── models/
+│       ├── final_streetlight_model.pkl
+│       ├── final_feature_columns.pkl
+│       ├── target_column.pkl
+│       └── model_info.json
+│           ↓
+├── 🌐 WEB APPLICATION
+│   ├── professional_app.py
+│   ├── templates/
+│   │   └── professional_index.html
+│   └── static/
+│       ├── css/professional.css
+│       └── js/professional.js
+│           ↓
+├── 📚 DOCUMENTATION
+│   ├── MODEL_DOCUMENTATION.md
+│   ├── QUICK_REFERENCE.md
+│   └── commands.txt
+└── ⚙️ CONFIGURATION
+    └── streetlight_env/
