@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Streetlight Energy Optimizer | AI-Powered</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/professional.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="professional-container">
+        <!-- Hero Header -->
+        <header class="hero-header">
+            <div class="hero-content">
+                <h1 class="hero-title">Smart Streetlight Energy Optimizer</h1>
+                <p class="hero-subtitle">AI-Powered Municipal Lighting Efficiency | Real-time Energy Savings</p>
+                <div class="model-badge">
+                    🧠 Trained on {{ model_info.training_samples|default(34310)|int|format }} records | 
+                    ⚡ {{ model_info.cv_accuracy_percentage|default(99.2)|round(1) }}% Accuracy
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2 class="section-title">🌍 Current Conditions</h2>
+                
+                <form id="predictionForm">
+                    <div class="feature-grid">
+                        <!-- Time & Date -->
+                        <div class="form-group">
+                            <label class="form-label" for="hour">🕒 Hour of Day</label>
+                            <input type="range" class="form-input" id="hour" name="hour" 
+                                   min="0" max="23" value="14" oninput="updateHourValue(this.value)">
+                            <div class="range-value">
+                                <span id="hourValue">14:00</span> 
+                                <span id="timeIndicator" class="time-indicator day">☀️ Day Time</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="month">📅 Month</label>
+                            <select class="form-input" id="month" name="month">
+                                <option value="1">January ❄️</option>
+                                <option value="2">February 🌨️</option>
+                                <option value="3">March 🌸</option>
+                                <option value="4">April 🌧️</option>
+                                <option value="5">May 🌷</option>
+                                <option value="6" selected>June ☀️</option>
+                                <option value="7">July 🔥</option>
+                                <option value="8">August 🌞</option>
+                                <option value="9">September 🍂</option>
+                                <option value="10">October 🍁</option>
+                                <option value="11">November 🌫️</option>
+                                <option value="12">December 🎄</option>
+                            </select>
+                        </div>
+
+                        <!-- Weather Conditions -->
+                        <div class="form-group">
+                            <label class="form-label" for="cloud">☁️ Cloud Coverage</label>
+                            <input type="range" class="form-input" id="cloud" name="cloud" 
+                                   min="0" max="100" value="20" oninput="updateCloudValue(this.value)">
+                            <div class="range-value">
+                                <span id="cloudValue">20%</span>
+                                <span id="weatherIndicator">☀️ Clear Sky</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="precipitation_mm">🌧️ Precipitation</label>
+                            <input type="range" class="form-input" id="precipitation_mm" name="precipitation_mm" 
+                                   value="0" step="0.1" min="0" max="5" oninput="updatePrecipValue(this.value)">
+                            <div class="range-value">
+                                <span id="precipValue">0.0 mm</span>
+                                <small>Rain/snow accumulation</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="humidity">💧 Humidity</label>
+                            <input type="range" class="form-input" id="humidity" name="humidity" 
+                                   value="50" min="0" max="100" oninput="updateHumidityValue(this.value)">
+                            <div class="range-value">
+                                <span id="humidityValue">50%</span>
+                                <small>Relative humidity</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="visibility_km">👁️ Visibility</label>
+                            <input type="range" class="form-input" id="visibility_km" name="visibility_km" 
+                                   value="10" step="0.1" min="0" max="20" oninput="updateVisibilityValue(this.value)">
+                            <div class="range-value">
+                                <span id="visibilityValue">10 km</span>
+                                <small>Visual range</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="wind_speed_kph">💨 Wind Speed</label>
+                            <input type="range" class="form-input" id="wind_speed_kph" name="wind_speed_kph" 
+                                   value="10" step="0.1" min="0" max="50" oninput="updateWindValue(this.value)">
+                            <div class="range-value">
+                                <span id="windValue">10 kph</span>
+                                <small>Wind intensity</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="temperature_final">🌡️ Temperature</label>
+                            <input type="range" class="form-input" id="temperature_final" name="temperature_final" 
+                                   value="25" step="0.1" min="-10" max="40" oninput="updateTempValue(this.value)">
+                            <div class="range-value">
+                                <span id="tempValue">25°C</span>
+                                <small>Ambient temperature</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span class="btn-icon">🤖</span>
+                        Get AI Recommendation
+                    </button>
+                </form>
+
+                <!-- Quick Scenarios -->
+                <div class="scenarios-section">
+                    <h3>🚀 Quick Scenarios</h3>
+                    <div class="scenario-buttons">
+                        <button class="scenario-btn" onclick="loadScenario('sunny_afternoon')">
+                            ☀️ Sunny Afternoon
+                        </button>
+                        <button class="scenario-btn" onclick="loadScenario('stormy_night')">
+                            🌧️ Stormy Night
+                        </button>
+                        <button class="scenario-btn" onclick="loadScenario('cloudy_morning')">
+                            ☁️ Cloudy Morning
+                        </button>
+                        <button class="scenario-btn" onclick="loadScenario('foggy_evening')">
+                            🌫️ Foggy Evening
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section">
+                <h2 class="section-title">🎯 AI Recommendation</h2>
+                
+                <div id="defaultResult" class="result-card welcome-card">
+                    <div class="welcome-content">
+                        <div class="welcome-icon">💡</div>
+                        <h3>Ready to Optimize Street Lighting</h3>
+                        <p>Enter current conditions or try a quick scenario to get AI-powered lighting recommendations with energy savings analysis.</p>
+                        <div class="feature-highlights">
+                            <div class="feature-item">
+                                <span class="feature-icon">⚡</span>
+                                <span>99.2% Accuracy</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">💰</span>
+                                <span>Energy Savings</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">🌍</span>
+                                <span>CO₂ Reduction</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="resultCard" class="result-card" style="display: none;">
+                    <!-- Dynamic content will be inserted here by JavaScript -->
+                </div>
+
+                <!-- Analytics Section -->
+                <div id="analyticsSection" class="analytics-section" style="display: none;">
+                    <h3>📊 Energy Impact Analysis</h3>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <div class="analytics-value" id="hourlySavings">0W</div>
+                            <div class="analytics-label">Hourly Savings</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-value" id="dailySavings">0W</div>
+                            <div class="analytics-label">Daily Potential</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-value" id="monthlySavings">0W</div>
+                            <div class="analytics-label">Monthly Impact</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-value" id="co2Savings">0kg</div>
+                            <div class="analytics-label">CO₂ Reduction</div>
+                        </div>
+                    </div>
+                    <canvas id="savingsChart" width="400" height="200"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">AI is analyzing conditions...</div>
+            <div class="loading-details">Evaluating 20+ factors for optimal lighting</div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/professional.js') }}"></script>
+</body>
+</html>

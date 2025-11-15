@@ -1,0 +1,74 @@
+{
+  "training_samples": 34310,
+  "features_used": 20,
+  "feature_names": [
+    "power_consumption_watts",
+    "voltage_volts",
+    "current_amperes",
+    "temperature_final",
+    "env_current_amperes",
+    "hour",
+    "month",
+    "day_of_week",
+    "is_night",
+    "is_weekend",
+    "day_length_minutes",
+    "wind_speed_kph",
+    "humidity",
+    "cloud",
+    "visibility_km",
+    "precipitation_mm",
+    "weather_severity",
+    "is_clear_sky",
+    "natural_light_score",
+    "weather_energy_factor"
+  ],
+  "target_distribution": {
+    "lights_on": 27070,
+    "lights_off": 7240
+  },
+  "cv_accuracy": 0.9923054503060333,
+  "cv_accuracy_percentage": 99.23054503060334,
+  "top_features": [
+    {
+      "feature": "is_night",
+      "importance": 0.20334330785098784
+    },
+    {
+      "feature": "visibility_km",
+      "importance": 0.1922050269442773
+    },
+    {
+      "feature": "hour",
+      "importance": 0.1669971620288465
+    },
+    {
+      "feature": "cloud",
+      "importance": 0.15389600579385418
+    },
+    {
+      "feature": "natural_light_score",
+      "importance": 0.10970962993007805
+    },
+    {
+      "feature": "humidity",
+      "importance": 0.07046150471652333
+    },
+    {
+      "feature": "month",
+      "importance": 0.030470720851793812
+    },
+    {
+      "feature": "weather_energy_factor",
+      "importance": 0.029981538892287586
+    },
+    {
+      "feature": "weather_severity",
+      "importance": 0.019720483288228157
+    },
+    {
+      "feature": "day_length_minutes",
+      "importance": 0.0037822787290551886
+    }
+  ]
+}
