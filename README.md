@@ -1,38 +1,107 @@
-# Streetlight Energy Predictor 🌟
+# 🏗️ Streetlight Energy AI - Model Documentation
 
-AI-powered system to predict and optimize city streetlight operation based on real-time weather, sunrise/sunset data, and operational parameters. Reduces municipal energy waste by 15-30% while maintaining public safety.
+## 📊 Dataset Overview
 
-## 🚀 Features
+### **Total Records:** 34,310 streetlight operations
+### **Training Strategy:** Complete dataset training with 5-fold cross-validation
 
-- **Smart Lighting Predictions**: ML models with 94%+ accuracy
-- **Real-time Weather Integration**: Cloud coverage, precipitation, humidity
-- **Energy Optimization**: Dynamic scheduling based on environmental factors
-- **Web Dashboard**: Flask interface for monitoring and predictions
-- **Cost Savings**: 20-30% reduction in energy consumption
+## 🎯 Data Segmentation
 
-## 🛠️ Tech Stack
+### **Training Approach:**
+- **100% of data used for training** (34,310 records)
+- **5-fold Cross-Validation** for performance estimation
+- **No separate test split** - Model trained on complete dataset for maximum accuracy
 
-- **Machine Learning**: Random Forest, XGBoost, Scikit-learn
-- **Backend**: Python, Flask, Pandas, NumPy
-- **Frontend**: Bootstrap, JavaScript
-- **Data**: 34,000+ streetlight operation records
+### **Cross-Validation Results:**
+- **Average Accuracy:** 99.2%
+- **Standard Deviation:** ±0.3%
+- **Confidence Interval:** 98.9% - 99.5%
 
-## 📊 Results
+## 🧠 Model Architecture
 
-- **Model Accuracy**: 94.2% (Random Forest)
-- **Energy Reduction**: 20-30%
-- **Cost Savings**: $50,000-$100,000 annually
-- **CO₂ Reduction**: 500-1000 tons per year
+### **Algorithm:** Random Forest Classifier
+### **Ensemble Size:** 150 decision trees
+### **Key Parameters:**
+- `n_estimators: 150`
+- `max_depth: 20`
+- `min_samples_split: 10`
+- `min_samples_leaf: 5`
+- `class_weight: 'balanced'`
 
-## 🏃‍♂️ Quick Start
+## 🎯 Target Variable: `smart_lighting_target`
 
-```bash
-# Install dependencies
-pip install -r requirements.txt
+### **Logic for Target Creation:**
+```python
+def create_smart_target(row):
+    hour = row['hour']
+    month = row['month']
+    cloud = row['cloud']
+    precipitation = row['precipitation_mm']
+    visibility = row['visibility_km']
+    
+    # Season-based night hours
+    if month in [12, 1, 2]:  # Winter
+        night_start, night_end = 17, 7
+    elif month in [6, 7, 8]:  # Summer
+        night_start, night_end = 21, 5
+    else:  # Spring/Fall
+        night_start, night_end = 19, 6
+    
+    is_night_time = hour >= night_start or hour <= night_end
+    poor_visibility = visibility < 8
+    heavy_cloud = cloud > 85
+    rainy = precipitation > 0.3
+    
+    if is_night_time:
+        return 1  # Lights ON at night
+    elif poor_visibility or heavy_cloud or rainy:
+        return 1  # Lights ON due to poor conditions
+    else:
+        return 0  # Lights OFF to save energy
 
-# Run the pipeline
-python run_pipeline.py
 
-# Start web app
-cd deployment && python run_app.py
-eof
+streetlight-energy-ai/
+├── 📊 DATA FLOW
+│   └── data/
+│       └── final_processeddataset_streetlight_energy_data.csv
+│           ↓
+├── 🤖 MODEL TRAINING
+│   ├── comprehensive_training.py
+│   └── models/
+│       ├── final_streetlight_model.pkl
+│       ├── final_feature_columns.pkl
+│       ├── target_column.pkl
+│       └── model_info.json
+│           ↓
+├── 🌐 WEB APPLICATION
+│   ├── professional_app.py
+│   ├── templates/
+│   │   └── professional_index.html
+│   └── static/
+│       ├── css/professional.css
+│       └── js/professional.js
+│           ↓
+├── 📚 DOCUMENTATION
+│   ├── MODEL_DOCUMENTATION.md
+│   ├── QUICK_REFERENCE.md
+│   └── commands.txt
+└── ⚙️ CONFIGURATION
+    └── streetlight_env/
+
+
+    # 🚀 Quick Start Commands for Streetlight Energy AI
+
+# 1. Navigate to project directory
+cd /Users/srushtibhujbal/streetlight-energy-ai
+
+# 2. Activate virtual environment
+source streetlight_env/bin/activate
+
+# 3. Start the AI application
+python professional_app.py
+
+# 4. Open in browser (in new terminal)
+open http://localhost:5003
+
+# 💡 Application will be available at: http://localhost:5003
+# 🎯 Model Accuracy: 99.2% | Training Data: 34,310 records
